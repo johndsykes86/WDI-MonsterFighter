@@ -1,0 +1,21 @@
+.container{
+  margin: 50px auto;
+  width: 1000px;
+  height: 650px;
+  border: 5px solid black;
+  text-align: center;
+}
+
+.display{
+  margin: 50px auto;
+  width: 800px;
+  height: 450px;
+  border: 2px solid rgb(22, 24, 23)
+}
+
+button{
+  text-align: center;
+  width: 75px;
+  height: 55px;
+  border-radius: 50%;
+}
