@@ -1,20 +1,18 @@
 .container{
-  margin: 50px auto;
-  width: 1000px;
-  height: 650px;
+  margin: 0px auto;
   border: 5px solid black;
+  height: 650px;
   text-align: center;
 }
 
-.display{
-  margin: 50px auto;
-  width: 800px;
-  height: 450px;
-  border: 2px solid rgb(22, 24, 23)
+.header, .footer{
+  padding: 50px;
+  background-color: blue;
 }
 
+
 div.instruct{
-  margin: 0 auto;
+  margin: 200px auto;
   width: 400px;
   height: 200px;
   background: dodgerblue;
@@ -22,14 +20,24 @@ div.instruct{
   text-align: center;
 }
 
-button.instruct-button{
-  width: 30px;
-  height: 30px;
+.instruct p{
+  padding: 35px;
+  margin: 5px;
+  font-size: 20px;
+}
+
+ .instruct-button{
+  position: relative
+  margin-bottom: 20px;
+  width: 40px;
+  height: 20px;
   background: white;
   color: black;
 }
 
-button.newgame{
+.newgame{
+  position: absolute;
+  bottom: 700;
   text-align: center;
   width: 75px;
   height: 55px;
