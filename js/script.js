@@ -22,7 +22,6 @@ startButton.on('click', function(){
 
 function newGame(){
   namePrompt()
-  display.append('<div class = "instruct"></>')
   nameCheck()
 }
 
@@ -60,6 +59,8 @@ playerTwoName()
 //Also, I need to make sure the name's are correct because well, people make mistakes.
 function nameCheck(){
 
+    display.append('<div class = "instruct"><div</>')
+
   $('.instruct').html('<p>Are these names correct?' + '<br>' + '<br>'+ playerOne.name + '<br>'+ playerTwo.name +'</p>' + '<button class="instruct-button yes ">Yes</button> <button class="instruct-button no">No</button>')
 
 
@@ -84,12 +85,21 @@ function nameCheck(){
 //As a user, I should see instructions on how to play the game after clicking the new game button
 
 function instructions(){
-
-  $('.instruct').html('<p> This is my instructions for the game</p>' + '<button class="instruct-button">OK</button>')
+var instructions = "A fierce and wild monster rules these lands. Can you defeat the monster in 30 seconds or less?  "
+  $('.instruct').html('<p>' +instructions+'</p>' + '<button class="instruct-button">OK</button>')
 
   $('.instruct-button').on('click', function(){
     $('.instruct').hide()
   })
+}
 
+function boss(){
+  //target the display div and append the image.
+  var boss = $('.enemy')
+  display.append("<img src='img/cyclops.png' class='enemy'>")
 
+  $('img.enemy').on('click', function(){
+    console.log("I've been clicked")
+    $(this).fadeOut();
+  })
 }

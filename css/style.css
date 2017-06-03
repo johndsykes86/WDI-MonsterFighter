@@ -1,45 +1,59 @@
-.container{
-  margin: 0px auto;
-  border: 5px solid black;
-  height: 650px;
-  text-align: center;
-}
-
-.header, .footer{
-  padding: 50px;
+body{
   background-color: blue;
 }
 
+.container{
+  margin: 50px;
+  border: 5px solid black;
+  height: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+}
+
+
 
 div.instruct{
-  margin: 200px auto;
-  width: 400px;
-  height: 200px;
+  margin: 100px auto;
+  width: 600px;
+  height: 300px;
   background: dodgerblue;
   color: white;
   text-align: center;
 }
 
 .instruct p{
-  padding: 35px;
   margin: 5px;
   font-size: 20px;
+  text-align: center;
 }
 
  .instruct-button{
-  position: relative
   margin-bottom: 20px;
   width: 40px;
   height: 20px;
   background: white;
   color: black;
+  text-align: center;
 }
 
 .newgame{
-  position: absolute;
-  bottom: 700;
   text-align: center;
   width: 75px;
   height: 55px;
   border-radius: 50%;
+  margin: 20px;
+  padding: 10px;
+}
+
+.enemy{
+  max-width: 75%;
+  max-height: 75%;
+}
+
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
