@@ -96,7 +96,7 @@ var instructions = "A fierce and wild monster rules these lands. Can you defeat 
 //being able to see the enemy.
 function boss(){
   //target the display div and append the image.
-  var boss = $('.enemy')
+
   display.append("<img src='img/cyclops.png' class='enemy'>")
 
   $('img.enemy').on('click', function(){
@@ -105,14 +105,47 @@ function boss(){
   })
 }
 
-function character(){
-  var character = $('.enemy')
+//being able to see my character on screen.
+function hero(){
   display.append("<img src='img/hero.png' class='hero'>")
 
   $('img.hero').on('click', function(){
     console.log("I've been clicked")
     $(this).fadeOut();
   })
+}
+
+function attack(){
+     display.append("<button class='attack-normal'>ATTACK</button>")
+
+      display.append("<button class='attack-strong'>STRONG ATTACK!</button>")
+
+      var countToMega = 0
+
+     $('.attack-normal').on('click', function(){
+       console.log("I've been clicked")
+       playerOne.score +=10;
+     })
+
+     $('.attack-strong').on('click', function(){
+       console.log("I've been clicked")
+       playerOne.score +=30;
+       countToMega+=1
+
+       if (countToMega === 5){
+         console.log("MY ULT IS CHARGED")
+         display.append("<button class='attack-mega'>Mega Attack!</button>")
+         playerOne.score +=100
+         countToMega = 0;
+         $('.attack-mega').on('click', function(){
+           $(this).hide();
+         })
+       }
+     })
+
+
+
+
 }
 
 //
