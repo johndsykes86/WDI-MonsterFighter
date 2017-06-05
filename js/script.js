@@ -124,7 +124,7 @@ function instructions() {
 
 
 function random(min, max){
-  return Math.floor(Math.random()*max)
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 
@@ -134,26 +134,27 @@ function attack() {
   display.append("<button class='attack-strong attack-button'>STRONG ATTACK!</button>")
 
 
+
   var countToMega = 0
 
   $('.attack-normal').on('click', function() {
     console.log("I've been clicked")
     playerOne.score +=
     enemy.hp -= 10;
-    randomMove()
+    $(this).css({'left': random(100, 150), 'top': random(100,150)})
   })
 
   $('.attack-strong').on('click', function() {
     console.log("I've been clicked")
     playerOne.score += 30;
     countToMega += 1
-  
+    $(this).css({'left': random(50, 200), 'top': random(50,200)})
 
 
     if (countToMega === 5) {
       console.log("MY ULT IS CHARGED")
       display.append("<button class='attack-mega attack-button'>Mega Attack!</button>")
-      $('.attack-mega').fadeOut(800)
+      $('.attack-mega').fadeOut(1000)
       playerOne.score += 100
       countToMega = 0;
       $('.attack-mega').on('click', function() {
@@ -162,21 +163,12 @@ function attack() {
       })
     }
 
-    randomMove();
   })
 
-  function randomMove(){
-    $('.attack-button').each(function(index){
-      $(this).css({'left': random(), 'top': random()})
-      console.log(this);
-    })
-  }
-
-  randomMove()
 
 }
 
 
-s
+
 
 //
