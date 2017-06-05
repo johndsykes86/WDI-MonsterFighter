@@ -12,28 +12,26 @@ var playerTwo = {
   score: 0
 }
 
+var enemy = {
+  hp: 1000,
+  isDefeated: false
+}
+
 //As a user, I should be able to start a new game by clicking a button
 
 startButton.on('click', function() {
   newGame()
-
 })
-
 
 function newGame() {
   namePrompt()
   nameCheck()
-
 }
-
-
 
 
 // As a user, I should be able to input my name so that I can know who I'm playing against.
 
 function namePrompt() {
-
-
   function playerOneName() {
     playerOne.name = prompt("What is player One's name")
 
@@ -60,9 +58,14 @@ function namePrompt() {
 //Also, I need to make sure the name's are correct because well, people make mistakes.
 function nameCheck() {
 
-  display.append('<div class = "instruct"><div</>')
 
-  $('.instruct').html('<p>Are these names correct?' + '<br>' + '<br>' + playerOne.name + '<br>' + playerTwo.name + '</p>' + '<button class="instruct-button yes ">Yes</button> <button class="instruct-button no">No</button>')
+   if ($('.instruct').length===0){
+   display.append('<div class = "instruct"><div</>')
+ }
+
+   $('.instruct').html('<p>Are these names correct?' + '</p>'+ '<p>' + playerOne.name + '<br>' + playerTwo.name + '</p>' + '<button class="instruct-button yes ">Yes</button> <button class="instruct-button no">No</button>')
+
+
 
 
 
@@ -83,6 +86,27 @@ function nameCheck() {
   })
 }
 
+//being able to see the enemy.
+function boss(){
+  display.append("<img src='img/cyclops.png' class='boss'>")
+
+  $('img.enemy').on('click', function() {
+    console.log("I've been clicked")
+
+  })
+}
+
+//being able to see my character on screen.
+function hero(){
+  display.append("<div class='hero-box'><img src='img/hero.png' class='hero'><div>")
+
+  $('img.hero').on('click', function() {
+    console.log("I've been clicked")
+  })
+}
+
+
+
 //As a user, I should see instructions on how to play the game after clicking the new game button
 
 function instructions() {
@@ -96,31 +120,11 @@ function instructions() {
   })
 }
 
-//being able to see the enemy.
-function boss() {
-  //target the display div and append the image.
-
-  display.append("<img src='img/cyclops.png' class='enemy'>")
-
-  $('img.enemy').on('click', function() {
-    console.log("I've been clicked")
-    
-  })
-}
-
-//being able to see my character on screen.
-function hero(){
-  display.append("<div class='hero-box'><img src='img/hero.png' class='hero'><div>")
-
-  $('img.hero').on('click', function() {
-    console.log("I've been clicked")
-
-  })
-}
 
 
-function random(){
-  return Math.floor(Math.random()*300)
+
+function random(min, max){
+  return Math.floor(Math.random()*max)
 }
 
 
@@ -130,12 +134,12 @@ function attack() {
   display.append("<button class='attack-strong attack-button'>STRONG ATTACK!</button>")
 
 
-
   var countToMega = 0
 
   $('.attack-normal').on('click', function() {
     console.log("I've been clicked")
-    playerOne.score += 10;
+    playerOne.score +=
+    enemy.hp -= 10;
     randomMove()
   })
 
@@ -143,7 +147,7 @@ function attack() {
     console.log("I've been clicked")
     playerOne.score += 30;
     countToMega += 1
-    $('.attack-strong').fadeOut(750).fadeIn(750)
+  
 
 
     if (countToMega === 5) {
@@ -171,5 +175,8 @@ function attack() {
   randomMove()
 
 }
+
+
+s
 
 //
