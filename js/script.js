@@ -93,6 +93,7 @@ var instructions = "A fierce and wild monster rules these lands. Can you defeat 
   })
 }
 
+//being able to see the enemy.
 function boss(){
   //target the display div and append the image.
   var boss = $('.enemy')
@@ -103,3 +104,15 @@ function boss(){
     $(this).fadeOut();
   })
 }
+
+function character(){
+  var character = $('.enemy')
+  display.append("<img src='img/hero.png' class='hero'>")
+
+  $('img.hero').on('click', function(){
+    console.log("I've been clicked")
+    $(this).fadeOut();
+  })
+}
+
+//
