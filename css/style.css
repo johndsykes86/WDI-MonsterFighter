@@ -52,6 +52,17 @@ div.instruct{
   max-height: 75%;
 }
 
+.attack-normal{
+  background: rgb(82, 255, 0)
+}
+
+.attack-strong {
+  background: rgb(255, 252, 0)
+}
+
+.attack-mega{
+  background: rgb(255, 0, 0)
+}
 .footer{
   display: flex;
   align-items: center;
