@@ -23,6 +23,7 @@ startButton.on('click', function() {
 function newGame() {
   namePrompt()
   nameCheck()
+
 }
 
 
@@ -90,6 +91,8 @@ function instructions() {
 
   $('.instruct-button').on('click', function() {
     $('.instruct').hide()
+    boss()
+    hero()
   })
 }
 
@@ -101,7 +104,7 @@ function boss() {
 
   $('img.enemy').on('click', function() {
     console.log("I've been clicked")
-    $(this).fadeOut();
+    
   })
 }
 
@@ -111,13 +114,13 @@ function hero(){
 
   $('img.hero').on('click', function() {
     console.log("I've been clicked")
-    $(this).fadeOut();
+
   })
 }
 
 
 function random(){
-  return  Math.floor(Math.random()*300)
+  return Math.floor(Math.random()*300)
 }
 
 
@@ -125,11 +128,6 @@ function attack() {
   display.append("<button class='attack-normal attack-button'>ATTACK</button>")
 
   display.append("<button class='attack-strong attack-button'>STRONG ATTACK!</button>")
-
-
-$('.attack-strong').fadeOut(250).fadeIn(250);
-$('.attack-mega').fadeOut(150).fadeIn(150);
-$('.attack-normal').fadeOut(500).fadeIn(500)
 
 
 
