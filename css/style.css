@@ -1,3 +1,4 @@
+/*Main project styles*/
 body {
   background-color: blue;
 }
@@ -49,9 +50,8 @@ div.instruct {
 
 }
 
-.attack-button{
-  float: left;
-}
+
+/*hero and boss styles*/
 
 .hero {
   max-width: 50%;
@@ -68,11 +68,6 @@ div.instruct {
   bottom: 50px;
 }
 
-
-.boss {
-
-}
-
 .hero-box {
   width: 500px;
   height: 400px;
@@ -80,10 +75,11 @@ div.instruct {
   right: 520px;
   top: 125px;
 }
-.attack-normal, .attack-strong{
-  position: relative;
-  padding: 10px;
-  margin: 30px;
+
+
+/*attack buttons*/
+.attack-button{
+  float: left;
 }
 
 .attack-normal {
@@ -98,8 +94,8 @@ div.instruct {
   background: rgb(255, 0, 0)
 }
 
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.attack-normal, .attack-strong, .attack-mega{
+  position: relative;
+  padding: 10px;
+  margin: 30px;
 }
