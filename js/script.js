@@ -11,7 +11,7 @@ var playerTwo = {
 }
 
 var enemy = {
-  hp: 1000,
+  hp: 4000,
   isDefeated: false
 }
 
@@ -34,7 +34,7 @@ startButton.on('click', function() {
 function newGame() {
   namePrompt()
   nameCheck()
-  gameboard()
+
 }
 
 
@@ -93,7 +93,7 @@ function nameCheck() {
 
 //You should be able to see the enemy.
 //You should be able to see the attacker on the screen.
-function gameboard(){
+function gameboard() {
   display.append("<img src='img/cyclops.png' class='boss'>")
   display.append("<div class='hero-box'><img src='img/hero.png' class='hero'><div>")
   setTimeout(attack, 1000)
@@ -107,9 +107,7 @@ function instructions() {
 
   $('.instruct-button').on('click', function() {
     $('.instruct').hide()
-    boss()
-    hero()
-    attack();
+    gameboard()
   })
 }
 
@@ -117,75 +115,92 @@ function instructions() {
 function attack() {
   display.append("<button class='attack-normal attack-button'>ATTACK</button>")
   display.append("<button class='attack-strong attack-button'>STRONG ATTACK!</button>")
-  display.append('<div class = scoreDisplay><p>'+currentPlayer.score+'</p></div>');
+  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + enemy.hp8 + '</p>' + '</div>');
 
-  var testCounter = 0
+
+  //updates score
+  function updateScore(ap) {
+    console.log(ap)
+    if (ap === 0) {
+      enemy.hp += 100;
+      $('.health').text("Boss health: " + enemy.hp)
+    } else {
+      currentPlayer.score += ap
+      enemy.hp -= ap
+      $('.score').text("Player Score: " + currentPlayer.score)
+      $('.health').text("Boss Health: " + enemy.hp)
+    }
+  }
+
 
   // random damage generator.
   function damage(min, max) {
 
     var ap = random(min, max)
 
-    function hitOrMiss(){
+    function hitOrMiss() {
       var hit = random(1, 5)
       return hit;
     }
 
-    if (hitOrMiss()<=1) {
+    if (hitOrMiss() <= 1) {
       ap = 0;
       console.log("You've missed...")
     } else {
-      currentPlayer.score += ap
-      enemy.hp -= ap
+      updateScore(ap)
     }
     return ap
   }
 
 
 
-  $('.attack-normal').on('click', function() {
-    damage(50, 80)
-    $(this).css({
-      'left': random(100, 150),
-      'top': random(100, 150)
-    })
-  })
-
-  $('.attack-strong').on('click', function() {
-    var strongAttack = damage(80, 100)
-    if (strongAttack > 0){
-      chargeCounter += 1
-      testCounter +=1
-      console.log('Test Counter is now at ' + testCounter)
-    }
-    $(this).css({
-      'left': random(50, 100),
-      'top': random(50, 100)
-    })
 
 
-    if (chargeCounter === 5) {
-      display.append("<button class='attack-mega attack-button'>Mega Attack!</button>")
-      $('.attack-mega').fadeOut(timeout)
-      damage(100,150);
-      chargeCounter = 0;
-      $('.attack-mega').on('click', function() {
-        $(this).hide();
-        timeout -= 500
-        if (damage != 0)
-        deathBlowCounter +=1
+    $('.attack-normal').on('click', function() {
+      updateScore(random(30, 50))
+      $(this).css({
+        'left': random(100, 150),
+        'top': random(100, 150)
       })
-    }
+    })
 
-    if (deathBlowCounter === 3){
-      damage
-    }
-  })
+    $('.attack-strong').on('click', function() {
+      var strongAttack = damage(50, 100)
+      if (strongAttack > 0) {
+        chargeCounter += 1
+
+      }
+      $(this).css({
+        'left': random(50, 100),
+        'top': random(50, 100)
+      })
 
 
-}
+      if (chargeCounter === 5) {
+        display.append("<button class='attack-mega attack-button'>Mega Attack!</button>")
+        $('.attack-mega').fadeOut(timeout)
+        damage(100, 400)
+        chargeCounter = 0;
+        $('.attack-mega').on('click', function() {
+          $(this).hide();
+          timeout -= 500
+          if (damage != 0)
+            deathBlowCounter += 1
+        })
+      }
+
+      if (deathBlowCounter === 3) {
+        display.append("<button class='deathBlow attack-button'>Death Blow</button>")
+
+        $('.deathblow').on('click', function(){
+          updateScore(enemy.hp)
+        })
+
+      }
+    })
+  }
 
 
 
 
-//
+  //
