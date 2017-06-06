@@ -16,9 +16,12 @@ var enemy = {
 }
 
 var currentPlayer = playerOne;
+var chargeCounter = 0
+var deathBlowCounter = 0
+var timeout = 1500;
 
 // random function for attacks, moving buttons, etc.
-function random(min, max){
+function random(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
@@ -31,6 +34,7 @@ startButton.on('click', function() {
 function newGame() {
   namePrompt()
   nameCheck()
+  gameboard()
 }
 
 
@@ -64,11 +68,11 @@ function namePrompt() {
 function nameCheck() {
 
 
-   if ($('.instruct').length===0){
-   display.append('<div class = "instruct"><div</>')
- }
+  if ($('.instruct').length === 0) {
+    display.append('<div class = "instruct"><div</>')
+  }
 
-   $('.instruct').html('<p>Are these names correct?' + '</p>'+ '<p>' + playerOne.name + '<br>' + playerTwo.name + '</p>' + '<button class="instruct-button yes ">Yes</button> <button class="instruct-button no">No</button>')
+  $('.instruct').html('<p>Are these names correct?' + '</p>' + '<p>' + playerOne.name + '<br>' + playerTwo.name + '</p>' + '<button class="instruct-button yes ">Yes</button> <button class="instruct-button no">No</button>')
 
   var no = $('.no')
   var yes = $('.yes')
@@ -80,7 +84,7 @@ function nameCheck() {
     nameCheck()
 
   })
-//continues through instructions.
+  //continues through instructions.
   yes.on('click', function() {
     console.log("You've clicked yes!")
     instructions()
@@ -88,24 +92,12 @@ function nameCheck() {
 }
 
 //You should be able to see the enemy.
-function boss(){
-  display.append("<img src='img/cyclops.png' class='boss'>")
-
-  $('img.enemy').on('click', function() {
-    console.log("I've been clicked")
-
-  })
-}
-
 //You should be able to see the attacker on the screen.
-function hero(){
+function gameboard(){
+  display.append("<img src='img/cyclops.png' class='boss'>")
   display.append("<div class='hero-box'><img src='img/hero.png' class='hero'><div>")
-
-  $('img.hero').on('click', function() {
-    console.log("I've been clicked")
-  })
+  setTimeout(attack, 1000)
 }
-
 
 
 //As a user, I should see instructions on how to play the game after clicking the new game button
@@ -121,47 +113,73 @@ function instructions() {
   })
 }
 
-
-
+//I should be able to attack the boss.
 function attack() {
   display.append("<button class='attack-normal attack-button'>ATTACK</button>")
-
   display.append("<button class='attack-strong attack-button'>STRONG ATTACK!</button>")
+  display.append('<div class = scoreDisplay><p>'+currentPlayer.score+'</p></div>');
 
-  function damage(){
-    var ap = random(50, 100)
-    console.log(ap)
-    currentPlayer.score += ap
-    enemy.hp -= ap
+  var testCounter = 0
+
+  // random damage generator.
+  function damage(min, max) {
+
+    var ap = random(min, max)
+
+    function hitOrMiss(){
+      var hit = random(1, 5)
+      return hit;
+    }
+
+    if (hitOrMiss()<=1) {
+      ap = 0;
+      console.log("You've missed...")
+    } else {
+      currentPlayer.score += ap
+      enemy.hp -= ap
+    }
+    return ap
   }
 
-  var countToMega = 0
+
 
   $('.attack-normal').on('click', function() {
-
-
-    $(this).css({'left': random(100, 150), 'top': random(100,150)})
+    damage(50, 80)
+    $(this).css({
+      'left': random(100, 150),
+      'top': random(100, 150)
+    })
   })
 
   $('.attack-strong').on('click', function() {
+    var strongAttack = damage(80, 100)
+    if (strongAttack > 0){
+      chargeCounter += 1
+      testCounter +=1
+      console.log('Test Counter is now at ' + testCounter)
+    }
+    $(this).css({
+      'left': random(50, 100),
+      'top': random(50, 100)
+    })
 
-    playerOne.score += 30;
-    countToMega += 1
-    $(this).css({'left': random(50, 100), 'top': random(50,100)})
 
-
-    if (countToMega === 5) {
-      console.log("MY ULT IS CHARGED")
+    if (chargeCounter === 5) {
       display.append("<button class='attack-mega attack-button'>Mega Attack!</button>")
-      $('.attack-mega').fadeOut(1000)
-      playerOne.score += 100
-      countToMega = 0;
+      $('.attack-mega').fadeOut(timeout)
+      damage(100,150);
+      chargeCounter = 0;
       $('.attack-mega').on('click', function() {
-        console.log('OH. OH MY. OH MY GOODNESS!');
         $(this).hide();
+        timeout -= 500
+        if (damage != 0)
+        deathBlowCounter +=1
       })
     }
 
+    if (deathBlowCounter === 3){
+      damage
+    }
   })
 
 

@@ -50,6 +50,13 @@ div.instruct {
 
 }
 
+.scoreDisplay{
+  border: 2px solid black;
+  position: relative;
+  right: 900px;
+  bottom: 300px;
+}
+
 
 /*hero and boss styles*/
 
