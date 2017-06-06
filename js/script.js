@@ -1,5 +1,3 @@
-console.log("I'm loaded!")
-
 var startButton = $('.newgame')
 var display = $('.container')
 var playerOne = {
@@ -15,6 +13,13 @@ var playerTwo = {
 var enemy = {
   hp: 1000,
   isDefeated: false
+}
+
+var currentPlayer = playerOne;
+
+// random function for attacks, moving buttons, etc.
+function random(min, max){
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 //As a user, I should be able to start a new game by clicking a button
@@ -65,28 +70,24 @@ function nameCheck() {
 
    $('.instruct').html('<p>Are these names correct?' + '</p>'+ '<p>' + playerOne.name + '<br>' + playerTwo.name + '</p>' + '<button class="instruct-button yes ">Yes</button> <button class="instruct-button no">No</button>')
 
-
-
-
-
   var no = $('.no')
   var yes = $('.yes')
 
-
+  //if you click no on the confirmation, you'll be prompted for names again.
   no.on('click', function() {
     console.log("You've clicked no!")
     namePrompt()
     nameCheck()
 
   })
-
+//continues through instructions.
   yes.on('click', function() {
     console.log("You've clicked yes!")
     instructions()
   })
 }
 
-//being able to see the enemy.
+//You should be able to see the enemy.
 function boss(){
   display.append("<img src='img/cyclops.png' class='boss'>")
 
@@ -96,7 +97,7 @@ function boss(){
   })
 }
 
-//being able to see my character on screen.
+//You should be able to see the attacker on the screen.
 function hero(){
   display.append("<div class='hero-box'><img src='img/hero.png' class='hero'><div>")
 
@@ -108,7 +109,6 @@ function hero(){
 
 
 //As a user, I should see instructions on how to play the game after clicking the new game button
-
 function instructions() {
   var instructions = "A fierce and wild monster rules these lands. Can you defeat the monster in 30 seconds or less?  "
   $('.instruct').html('<p>' + instructions + '</p>' + '<button class="instruct-button">OK</button>')
@@ -117,15 +117,10 @@ function instructions() {
     $('.instruct').hide()
     boss()
     hero()
+    attack();
   })
 }
 
-
-
-
-function random(min, max){
-  return Math.floor(Math.random() * (max - min)) + min;
-}
 
 
 function attack() {
@@ -133,22 +128,26 @@ function attack() {
 
   display.append("<button class='attack-strong attack-button'>STRONG ATTACK!</button>")
 
-
+  function damage(){
+    var ap = random(50, 100)
+    console.log(ap)
+    currentPlayer.score += ap
+    enemy.hp -= ap
+  }
 
   var countToMega = 0
 
   $('.attack-normal').on('click', function() {
-    console.log("I've been clicked")
-    playerOne.score +=
-    enemy.hp -= 10;
+
+
     $(this).css({'left': random(100, 150), 'top': random(100,150)})
   })
 
   $('.attack-strong').on('click', function() {
-    console.log("I've been clicked")
+
     playerOne.score += 30;
     countToMega += 1
-    $(this).css({'left': random(50, 200), 'top': random(50,200)})
+    $(this).css({'left': random(50, 100), 'top': random(50,100)})
 
 
     if (countToMega === 5) {
