@@ -12,7 +12,7 @@ var playerTwo = {
 }
 
 var enemy = {
-  hp: 4000,
+  hp: 2000,
   isDefeated: false
 }
 
@@ -105,10 +105,9 @@ function instructions() {
   $('.instruct').html('<p>' + story + '</p>' + '<button class="instruct-button 1">OK</button>')
 
   $('.1').on('click', function() {
-    $('.instruct').html('<p class = "attacks">' + attackZero + "<br>" + attackOne + "<br>" + attackTwo + "<br>" + attackThree + '</p>' +'<button class="instruct-button 2">OK</button>')
+    $('.instruct').html('<p class = "attacks">' + attackZero + "<br>" + attackOne + "<br>" + attackTwo + "<br>" + attackThree + '</p>' + '<button class="instruct-button 2">OK</button>')
 
     $('.2').on('click', function() {
-      console.log('Ready to Start!')
       $('.instruct').hide()
       gameboard()
     })
@@ -120,7 +119,7 @@ function gameboard() {
   display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + enemy.hp + '</p>' + '</div>');
   display.append("<img src='img/cyclops.png' class='boss'>")
   display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
-  setTimeout(attack, 500)
+
 }
 
 //I should be able to attack the boss.
@@ -154,10 +153,11 @@ function attack() {
 
     if (hitOrMiss() <= 2) {
       ap = 0;
+      console.log(ap)
       $('.miss').text("MISS!")
     } else {
       console.log(ap)
-      display.append("<h1 class='hit>"+ap+"</h1>")
+      display.append("<h1 class='hit>" + ap + "</h1>")
       updateScore(ap)
     }
     return ap
@@ -167,62 +167,85 @@ function attack() {
 
 
 
-    $('.attack-normal').on('click', function() {
-      var normalAttack = updateScore(25,50);
-      $(this).css({
-        'left': random(0, 300)+"px",
-        'top': random(0, 125)+"px"
-      })
+  $('.attack-normal').on('click', function() {
+    var normalAttack = updateScore(25, 50);
+    $(this).css({
+      'left': random(0, 300) + "px",
+      'top': random(0, 125) + "px"
     })
+  })
 
-    $('.attack-strong').on('click', function() {
-      var strongAttack = damage(50, 100)
-      if (strongAttack > 0) {
-        chargeCounter += 1
-      }
-      $(this).css({
-        'left': random(0, 300)+"px",
-        'top': random(0, 125)+"px"
-      })
+  $('.attack-strong').on('click', function() {
+    var strongAttack = damage(50, 100)
+    if (strongAttack > 0) {
+      chargeCounter += 1
+    } else {
+      console.log("you missed")
+    }
+    $(this).css({
+      'left': random(0, 300) + "px",
+      'top': random(0, 125) + "px"
     })
 
     if (chargeCounter === 5) {
       $('.heroBox').append("<button class='attack-mega attack-button'></button>")
       $('.attack-mega').fadeOut(timeout)
-      damage(200, 400)
-      chargeCounter = 0;
       $('.attack-mega').on('click', function() {
+       var megaAttack = damage(200, 400)
         $(this).hide();
-        timeout -= 200
-        if (damage != 0)
+        timeout -= 300
+        if (megaAttack != 0){
           deathBlowCounter += 1
+        } else {
+          console.log('missed DeathBlow')
+        }
       })
+      chargeCounter = 0;
     }
 
-      if (deathBlowCounter === 3 ) {
-        var deathBlowChance = random(1,2)
-          heroBox.append("<button class='deathBlow attack-button'>Death Blow</button>")
+    if (deathBlowCounter === 3) {
+      heroBox.append("<button class='deathBlow attack-button'>Death Blow</button>")
 
-          $('.deathBlow').on('click', function(){
-            if (deathBlowChance === 1) {
-              enemy.hp = 0
-              console.log ("he's dead Jim")
-            } else {
-              console.log("Oh no! DeathBlow failed! Enemy's recovering half their health. ")
-              enemy.hp = 2000
-            }
+      $('.deathBlow').on('click', function() {
+        var deathBlowChance = random(1, 2)
+        if (deathBlowChance === 1) {
+          enemy.hp = 0
+          enemy.isDefeated = true
+          console.log("he's dead Jim")
+        } else {
+          console.log("Oh no! DeathBlow failed! Enemy's recovering half their health. ")
+          enemy.hp = 2000
+        }
 
-          })
-
-      }
-
+      })
 
     }
 
 
+  })
+
+  if (enemy.hp===0){
+    console.log('enemy is defeated')
+    enemy.isDefeated = true;
+  }
+
+  if (enemy.isDefeated){
+    display.append("<h1>Game over</h1>")
+    currentPlayer = playerTwo;
+    display.empty();
+
+    gameboard();
+    }
+
+
+}
 
 
 
 
 
-  //
+
+
+
+
+//
