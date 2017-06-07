@@ -3,12 +3,14 @@ var display = $('.container')
 var heroBox = $('.heroBox')
 var playerOne = {
   name: '',
-  score: 0
+  score: 0,
+  timeElapsed: 0
 }
 
 var playerTwo = {
   name: '',
-  score: 0
+  score: 0,
+  timeElapsed: 0
 }
 
 var enemy = {
@@ -114,12 +116,29 @@ function instructions() {
   })
 }
 
+var milliseconds = 0
+var seconds = 0
+function timer (){
+  milliseconds++
+  if (milliseconds === 999){
+    milliseconds = 0
+    seconds +=1
+  }
+  if (seconds === 60 ){
+    minutes += 1
+    milliseconds = 0
+    seconds = 0
+  }
+  $('.timer').text('Time Elapsed: ' + seconds + ":" + milliseconds )
+}
+
 
 function gameboard() {
-  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + enemy.hp + '</p>' + '</div>');
+  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + enemy.hp + '</p>' + '<p class = "timer">'+ '</p>' +'</div>');
   display.append("<img src='img/cyclops.png' class='boss'>")
   display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
-
+  attack()
+  setInterval(timer, 1)
 }
 
 //I should be able to attack the boss.
@@ -222,23 +241,12 @@ function attack() {
     }
 
 
-  })
-
-  if (enemy.hp===0){
-    console.log('enemy is defeated')
-    enemy.isDefeated = true;
-  }
-
-  if (enemy.isDefeated){
-    display.append("<h1>Game over</h1>")
-    currentPlayer = playerTwo;
-    display.empty();
-
-    gameboard();
-    }
+  })}
 
 
-}
+
+
+
 
 
 
