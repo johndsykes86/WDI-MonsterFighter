@@ -24,9 +24,17 @@ div.instruct {
 }
 
 .instruct p {
-  margin: 15px;
+  margin: 10px;
   font-size: 20px;
   text-align: center;
+
+}
+
+.attacks {
+  margin: 10px;
+  font-size: 20px;
+  text-align: justify;
+
 }
 
 .instruct-button {

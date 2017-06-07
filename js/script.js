@@ -97,15 +97,15 @@ function nameCheck() {
 function instructions() {
 
   var story = "A fierce and wild monster rules these lands. You've been sent into the deep woods to slay the dreaded beast in its lair. Your weapon hand shakes as you encounter the beast, Can you defeat the monster before he defeats you?"
-  var attackZero = "Attack by clicking the attack buttons. <br><br><button class='attack-normal attack-button'>/button><br>Does between 25-50 damage. Not your strongest attack but the most reliable so you'll never miss"
+  var attackZero = "<button class='attack-normal attack-button'></button><br>Does between 25-50 damage. Not your strongest attack but the most reliable so you'll never miss"
   var attackOne = "<br><button class='attack-strong attack-button'></button><br>Finally a real hero's attack. Does between 50-100 damage and unlocks the MEGA ATTACK! Beware: you can miss your strikes"
   var attackTwo = "<br><button class='attack-mega attack-button'></button><br>Does between 100-400 damge. If the gods are with you and you're fast enough, 3 of these attacks unlocks your fiercest blow"
-  var attackThree = "<br><button class='deathBlow attack-button'><br></button><br>This kills monsters dead. Unless you miss, which gives the monster time to heal. So don't miss. (50/50 chance to miss)"
+  var attackThree = "<br><button class='deathBlow attack-button'></button><br>This kills monsters dead. Unless you miss, which gives the monster time to heal. So don't miss. (50/50 chance to miss)"
 
   $('.instruct').html('<p>' + story + '</p>' + '<button class="instruct-button 1">OK</button>')
 
   $('.1').on('click', function() {
-    $('.instruct').html('<p>' + attackZero + '</p>' + '<p>' + attackOne + '</p>' + '<p>' + attackTwo + '</p>' + '<p>' + attackThree + '</p>' +'<button class="instruct-button 2">OK</button>')
+    $('.instruct').html('<p class = "attacks">' + attackZero + "<br>" + attackOne + "<br>" + attackTwo + "<br>" + attackThree + '</p>' +'<button class="instruct-button 2">OK</button>')
 
     $('.2').on('click', function() {
       console.log('Ready to Start!')
@@ -184,18 +184,20 @@ function attack() {
         'left': random(0, 300)+"px",
         'top': random(0, 125)+"px"
       })
-      if (chargeCounter === 5) {
-        $('.heroBox').append("<button class='attack-mega attack-button'></button>")
-        $('.attack-mega').fadeOut(timeout)
-        damage(200, 400)
-        chargeCounter = 0;
-        $('.attack-mega').on('click', function() {
-          $(this).hide();
-          timeout -= 200
-          if (damage != 0)
-            deathBlowCounter += 1
-        })
-      }
+    })
+
+    if (chargeCounter === 5) {
+      $('.heroBox').append("<button class='attack-mega attack-button'></button>")
+      $('.attack-mega').fadeOut(timeout)
+      damage(200, 400)
+      chargeCounter = 0;
+      $('.attack-mega').on('click', function() {
+        $(this).hide();
+        timeout -= 200
+        if (damage != 0)
+          deathBlowCounter += 1
+      })
+    }
 
       if (deathBlowCounter === 3 ) {
         var deathBlowChance = random(1,2)
@@ -215,8 +217,8 @@ function attack() {
       }
 
 
-    })
-  }
+    }
+
 
 
 
