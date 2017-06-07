@@ -1,27 +1,37 @@
+//Jquery selections
 var startButton = $('.newgame')
 var display = $('.container')
 var heroBox = $('.heroBox')
+
+//player and boss objects
 var playerOne = {
   name: '',
   score: 0,
-  timeElapsed: 0
+  timeElapsed: 0,
+  hasGone: false,
 }
 
 var playerTwo = {
   name: '',
   score: 0,
-  timeElapsed: 0
+  timeElapsed: 0,
+  hasGone: false,
 }
 
-var enemy = {
-  hp: 2000,
+var boss = {
+  hp: 1000,
   isDefeated: false
 }
 
+//Timer variables
+var milliseconds = 0
+var seconds = 0
+
+//game state variables
 var currentPlayer = playerOne;
 var chargeCounter = 0
 var deathBlowCounter = 0
-var timeout = 1500;
+var timeout = 2500;
 
 // random function for attacks, moving buttons, etc.
 function random(min, max) {
@@ -92,7 +102,7 @@ function nameCheck() {
   })
 }
 
-//You should be able to see the enemy.
+//You should be able to see the boss.
 //You should be able to see the attacker on the screen.
 
 //As a user, I should see instructions on how to play the game after clicking the new game button
@@ -116,8 +126,7 @@ function instructions() {
   })
 }
 
-var milliseconds = 0
-var seconds = 0
+
 function timer (){
   milliseconds++
   if (milliseconds === 999){
@@ -125,7 +134,7 @@ function timer (){
     seconds +=1
   }
   if (seconds === 60 ){
-    minutes += 1
+
     milliseconds = 0
     seconds = 0
   }
@@ -134,11 +143,11 @@ function timer (){
 
 
 function gameboard() {
-  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + enemy.hp + '</p>' + '<p class = "timer">'+ '</p>' +'</div>');
+  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + boss.hp + '</p>' + '<p class = "timer">'+ '</p>' +'</div>');
   display.append("<img src='img/cyclops.png' class='boss'>")
   display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
   attack()
-  setInterval(timer, 1)
+  time = setInterval(timer, 1)
 }
 
 //I should be able to attack the boss.
@@ -148,14 +157,14 @@ function attack() {
 
   //updates score
   function updateScore(ap) {
-    if (ap === 0) {
-      enemy.hp += 100;
-      $('.health').text("Boss health: " + enemy.hp)
+    if (ap <= 0) {
+      boss.hp += 100;
+      $('.health').text("Boss health: " + boss.hp)
     } else {
       currentPlayer.score += ap
-      enemy.hp -= ap
+      boss.hp -= ap
       $('.score').text("Player Score: " + currentPlayer.score)
-      $('.health').text("Boss Health: " + enemy.hp)
+      $('.health').text("Boss Health: " + boss.hp)
     }
   }
 
@@ -206,42 +215,85 @@ function attack() {
       'top': random(0, 125) + "px"
     })
 
-    if (chargeCounter === 5) {
-      $('.heroBox').append("<button class='attack-mega attack-button'></button>")
-      $('.attack-mega').fadeOut(timeout)
-      $('.attack-mega').on('click', function() {
-       var megaAttack = damage(200, 400)
-        $(this).hide();
-        timeout -= 300
-        if (megaAttack != 0){
-          deathBlowCounter += 1
-        } else {
-          console.log('missed DeathBlow')
-        }
-      })
-      chargeCounter = 0;
+
+
+
+
+
+
+
+  })
+
+  if (chargeCounter === 5) {
+    $('.heroBox').append("<button class='attack-mega attack-button'></button>")
+    $('.attack-mega').fadeOut(timeout)
+    $('.attack-mega').on('click', function() {
+     var megaAttack = damage(200, 400)
+      $(this).hide();
+      timeout -= 300
+      if (megaAttack != 0){
+        deathBlowCounter += 1
+      } else {
+        console.log('missed DeathBlow')
+      }
+    })
+    chargeCounter = 0;
+  }
+
+  if (deathBlowCounter === 3) {
+    $('.heroBox').append("<button class='deathBlow attack-button'>Death Blow</button>")
+    $('.deathBlow').fadeOut(1000)
+    $('.deathBlow').on('click', function() {
+      var deathBlowChance = random(1,4);
+      if (deathBlowChance > 1) {
+        boss.hp = 0
+        boss.isDefeated = true
+        console.log("he's dead Jim")
+      } else {
+        console.log("Oh no! DeathBlow failed! boss's recovering half their health. ")
+        boss.hp += boss.hp/2
+      }
+
+    })
+
+  }
+
+    //reset game and win condition!
+
+
+
+    if (boss.hp < 1) {
+      //clear the gameboard and save stats
+      console.log('the boss has been defeated!')
+      currentPlayer.timeElapsed = seconds/1000 + milliseconds
+      console.log(currentPlayer.name + "time's was: " +currentPlayer.timeElapsed)
+      display.empty()
+
+      setTimeout(function(){
+        console.log("this is where you'd show stats...")
+      }, 1000)
+      currentPlayer.hasGone = true;
+
     }
 
-    if (deathBlowCounter === 3) {
-      heroBox.append("<button class='deathBlow attack-button'>Death Blow</button>")
 
-      $('.deathBlow').on('click', function() {
-        var deathBlowChance = random(1, 2)
-        if (deathBlowChance === 1) {
-          enemy.hp = 0
-          enemy.isDefeated = true
-          console.log("he's dead Jim")
-        } else {
-          console.log("Oh no! DeathBlow failed! Enemy's recovering half their health. ")
-          enemy.hp = 2000
-        }
-
-      })
-
+    if (currentPlayer.hasGone === true){
+      currentPlayer = playerTwo
+      console.log("now we're clearing the variables")
+      chargeCounter = 0
+      deathBlowCounter = 0
+      timeout = 2500;
+      console.log('Now the current player is: '+ currentPlayer.name)
+      boss.hp = 1000
+      console.log("now it's " + currentPlayer.name + " 's turn!")
+      setTimeout(function(){
+        gameboard()
+      }, 5000)
     }
 
+}
 
-  })}
+
 
 
 
