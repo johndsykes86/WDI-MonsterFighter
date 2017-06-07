@@ -184,16 +184,14 @@ function attack() {
         'left': random(0, 300)+"px",
         'top': random(0, 125)+"px"
       })
-
-
       if (chargeCounter === 5) {
-        heroBox.append("<button class='attack-mega attack-button'>Mega Attack!</button>")
+        $('.heroBox').append("<button class='attack-mega attack-button'></button>")
         $('.attack-mega').fadeOut(timeout)
-        damage(100, 400)
+        damage(200, 400)
         chargeCounter = 0;
         $('.attack-mega').on('click', function() {
           $(this).hide();
-          timeout -= 400
+          timeout -= 200
           if (damage != 0)
             deathBlowCounter += 1
         })
@@ -201,7 +199,6 @@ function attack() {
 
       if (deathBlowCounter === 3 ) {
         var deathBlowChance = random(1,2)
-
           heroBox.append("<button class='deathBlow attack-button'>Death Blow</button>")
 
           $('.deathBlow').on('click', function(){
