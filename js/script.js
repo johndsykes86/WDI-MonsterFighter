@@ -1,5 +1,6 @@
 var startButton = $('.newgame')
 var display = $('.container')
+var heroBox = $('.heroBox')
 var playerOne = {
   name: '',
   score: 0
@@ -79,48 +80,56 @@ function nameCheck() {
 
   //if you click no on the confirmation, you'll be prompted for names again.
   no.on('click', function() {
-    console.log("You've clicked no!")
     namePrompt()
     nameCheck()
 
   })
   //continues through instructions.
   yes.on('click', function() {
-    console.log("You've clicked yes!")
     instructions()
   })
 }
 
 //You should be able to see the enemy.
 //You should be able to see the attacker on the screen.
-function gameboard() {
-  display.append("<img src='img/cyclops.png' class='boss'>")
-  display.append("<div class='hero-box'><img src='img/hero.png' class='hero'><div>")
-  setTimeout(attack, 1000)
-}
-
 
 //As a user, I should see instructions on how to play the game after clicking the new game button
 function instructions() {
-  var instructions = "A fierce and wild monster rules these lands. Can you defeat the monster in 30 seconds or less?  "
-  $('.instruct').html('<p>' + instructions + '</p>' + '<button class="instruct-button">OK</button>')
 
-  $('.instruct-button').on('click', function() {
-    $('.instruct').hide()
-    gameboard()
+  var story = "A fierce and wild monster rules these lands. You've been sent into the deep woods to slay the dreaded beast in its lair. Your weapon hand shakes as you encounter the beast, Can you defeat the monster before he defeats you?"
+  var attackZero = "Attack by clicking the attack buttons. <br><br><button class='attack-normal attack-button'>/button><br>Does between 25-50 damage. Not your strongest attack but the most reliable so you'll never miss"
+  var attackOne = "<br><button class='attack-strong attack-button'></button><br>Finally a real hero's attack. Does between 50-100 damage and unlocks the MEGA ATTACK! Beware: you can miss your strikes"
+  var attackTwo = "<br><button class='attack-mega attack-button'></button><br>Does between 100-400 damge. If the gods are with you and you're fast enough, 3 of these attacks unlocks your fiercest blow"
+  var attackThree = "<br><button class='deathBlow attack-button'><br></button><br>This kills monsters dead. Unless you miss, which gives the monster time to heal. So don't miss. (50/50 chance to miss)"
+
+  $('.instruct').html('<p>' + story + '</p>' + '<button class="instruct-button 1">OK</button>')
+
+  $('.1').on('click', function() {
+    $('.instruct').html('<p>' + attackZero + '</p>' + '<p>' + attackOne + '</p>' + '<p>' + attackTwo + '</p>' + '<p>' + attackThree + '</p>' +'<button class="instruct-button 2">OK</button>')
+
+    $('.2').on('click', function() {
+      console.log('Ready to Start!')
+      $('.instruct').hide()
+      gameboard()
+    })
   })
+}
+
+
+function gameboard() {
+  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + enemy.hp + '</p>' + '</div>');
+  display.append("<img src='img/cyclops.png' class='boss'>")
+  display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
+  setTimeout(attack, 500)
 }
 
 //I should be able to attack the boss.
 function attack() {
-  display.append("<button class='attack-normal attack-button'>ATTACK</button>")
-  display.append("<button class='attack-strong attack-button'>STRONG ATTACK!</button>")
-  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + enemy.hp8 + '</p>' + '</div>');
-
+  $(".heroBox").append("<button class='attack-normal attack-button'></button>")
+  $(".heroBox").append("<button class='attack-strong attack-button'></button>")
 
   //updates score
   function updateScore(ap) {
-    console.log(ap)
     if (ap === 0) {
       enemy.hp += 100;
       $('.health').text("Boss health: " + enemy.hp)
@@ -143,10 +152,12 @@ function attack() {
       return hit;
     }
 
-    if (hitOrMiss() <= 1) {
+    if (hitOrMiss() <= 2) {
       ap = 0;
-      console.log("You've missed...")
+      $('.miss').text("MISS!")
     } else {
+      console.log(ap)
+      display.append("<h1 class='hit>"+ap+"</h1>")
       updateScore(ap)
     }
     return ap
@@ -157,10 +168,10 @@ function attack() {
 
 
     $('.attack-normal').on('click', function() {
-      updateScore(random(30, 50))
+      var normalAttack = updateScore(25,50);
       $(this).css({
-        'left': random(100, 150),
-        'top': random(100, 150)
+        'left': random(0, 300)+"px",
+        'top': random(0, 125)+"px"
       })
     })
 
@@ -168,37 +179,49 @@ function attack() {
       var strongAttack = damage(50, 100)
       if (strongAttack > 0) {
         chargeCounter += 1
-
       }
       $(this).css({
-        'left': random(50, 100),
-        'top': random(50, 100)
+        'left': random(0, 300)+"px",
+        'top': random(0, 125)+"px"
       })
 
 
       if (chargeCounter === 5) {
-        display.append("<button class='attack-mega attack-button'>Mega Attack!</button>")
+        heroBox.append("<button class='attack-mega attack-button'>Mega Attack!</button>")
         $('.attack-mega').fadeOut(timeout)
         damage(100, 400)
         chargeCounter = 0;
         $('.attack-mega').on('click', function() {
           $(this).hide();
-          timeout -= 500
+          timeout -= 400
           if (damage != 0)
             deathBlowCounter += 1
         })
       }
 
-      if (deathBlowCounter === 3) {
-        display.append("<button class='deathBlow attack-button'>Death Blow</button>")
+      if (deathBlowCounter === 3 ) {
+        var deathBlowChance = random(1,2)
 
-        $('.deathblow').on('click', function(){
-          updateScore(enemy.hp)
-        })
+          heroBox.append("<button class='deathBlow attack-button'>Death Blow</button>")
+
+          $('.deathBlow').on('click', function(){
+            if (deathBlowChance === 1) {
+              enemy.hp = 0
+              console.log ("he's dead Jim")
+            } else {
+              console.log("Oh no! DeathBlow failed! Enemy's recovering half their health. ")
+              enemy.hp = 2000
+            }
+
+          })
 
       }
+
+
     })
   }
+
+
 
 
 
