@@ -62,7 +62,7 @@ div.instruct {
   position: absolute;
   width: 300px;
   right: 1100px;
-  bottom: 530px;
+  bottom: 500px;
 }
 
 
@@ -76,11 +76,14 @@ div.instruct {
 }
 
 .boss {
-  max-width: 80%;
-  max-height: 80%;
   position: absolute;
   left: 879px;
-  top: 10px;
+  top: 0px;
+}
+
+.boss img {
+  max-width: 80%;
+  max-height: 80%;
 }
 
 .heroBox {

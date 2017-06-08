@@ -9,6 +9,7 @@ var playerOne = {
   score: 0,
   timeElapsed: 0,
   hasGone: false,
+  hp: 2000
 }
 
 var playerTwo = {
@@ -16,10 +17,11 @@ var playerTwo = {
   score: 0,
   timeElapsed: 0,
   hasGone: false,
+  hp: 2000
 }
 
 var boss = {
-  hp: 1000,
+  hp: 4000,
   isDefeated: false
 }
 
@@ -152,32 +154,52 @@ function damage(min, max) {
 }
 
 
+
 //updates score
 function gameState(ap) {
-    currentPlayer.score += ap
-    boss.hp -= ap
-    var change = false;
-    $('.score').text("Player Score: " + currentPlayer.score)
-    $('.health').text("Boss Health: " + boss.hp)
 
-    if (boss.hp <= 1 && currentPlayer.hasGone===false) {
-        //clear the gameboard and save stats
-        console.log('the boss has been defeated!')
-        currentPlayer.timeElapsed = seconds/1000 + milliseconds
-        console.log(currentPlayer.name + "time's was: " +currentPlayer.timeElapsed)
-        currentPlayer.hasGone = true;
-        currentPlayer = playerTwo
-        change = true;
-        hargeCounter = 0
-        deathBlowCounter = 0
-        timeout = 2500;
-        boss.hp= 1000;
+  currentPlayer.score += ap
+  boss.hp -= ap
+  $('.boss img').effect('shake')
+  $('.score').text("Player Score: " + currentPlayer.score)
+  $('.health').text("Boss Health: " + boss.hp)
+  $('.playerhealth').text("Player Health: " + currentPlayer.hp)
+
+
+    bossAttack
+
+
+
+    if (boss.hp <= 1){
+      $('.boss').hide('explode', {pieces:32}, 3000)
+      currentPlayer.hasGone = true;
+      currentPlayer.timeElapsed = seconds / 1000 + milliseconds
+      seconds = 0
+      milliseconds = 0
+      console.log(currentPlayer.name + "time's was: " + currentPlayer.timeElapsed)
+      currentPlayer = playerTwo
+      ChargeCounter = 0
+      deathBlowCounter = 0
+      timeout = 2500;
+      boss.hp = 4000;
+      if(playerOne.hasGone === true & playerTwo.hasGone ==true){
+        console.log("game is over")
         display.empty()
-      }
-
-        if (change===true && playerTwo.hasGone === true && playerOne.hasGone===true){
-          display.html("<h1>Game Over, both players have gone/h1>")
+        if (playerOne.score >= playerTwo.score || playerOne.timeElapsed >= playerTwo.score){
+          display.append("<h1>"+playerOne.name +" has won!</h1>")
+        } else {
+          display.append("<h1>"+playerTwo.name +" has won!</h1>")
         }
+      } else {
+      display.empty()
+      console.log("I'm about to restart the game... did you mean for this to happen?>")
+      console.log("it's" + currentPlayer.name + "'s turn'")
+      resetboard = setTimeout(gameboard, 5000)
+    }
+  }
+
+
+
 
 
 }
@@ -186,27 +208,28 @@ function gameState(ap) {
 
 
 function gameboard() {
-    display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "health">Boss Health: ' + boss.hp + '</p>' + '<p class = "timer">' + '</p>' + '</div>');
-    display.append("<img src='img/cyclops.png' class='boss'>")
-    display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
-    $(".heroBox").append("<button class='attack-normal attack-button'></button>")
-    $(".heroBox").append("<button class='attack-strong attack-button'></button>")
-    setInterval(timer, 1)
+  display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "playerhealth">Player Health: ' + currentPlayer.hp + '</p>' + '<p class = "health">Boss Health: ' + boss.hp + '</p>' + '<p class = "timer">' + '</p>' + ' </div>');
+  display.append("<div class='boss'><img src='img/cyclops.png'></div>")
+  display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
+  $(".heroBox").append("<button class='attack-normal attack-button'></button>")
+  $(".heroBox").append("<button class='attack-strong attack-button'></button>")
+  setInterval(timer, 1)
 
-    $('.attack-normal').on('click', function() {
-      var normalAttack = gameState(25, 50);
-      $(this).css({
-        'left': random(0, 300) + "px",
-        'top': random(0, 125) + "px"
-      })
+
+  $('.attack-normal').on('click', function() {
+    var normalAttack = gameState(25, 50);
+    $(this).css({
+      'left': random(0, 300) + "px",
+      'top': random(0, 125) + "px"
+    })
+  })
+
+  $('.attack-strong').on('click', function() {
+    var strongAttack = damage(50, 100)
+    $(this).css({
+      'left': random(0, 300) + "px",
+      'top': random(0, 125) + "px"
     })
 
-    $('.attack-strong').on('click', function() {
-      var strongAttack = damage(50, 100)
-      $(this).css({
-        'left': random(0, 300) + "px",
-        'top': random(0, 125) + "px"
-      })
-
-    })
+  })
 }
