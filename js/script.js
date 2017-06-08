@@ -164,7 +164,7 @@ function gameState(ap) {
   $('.playerhealth').text("Player Health: " + currentPlayer.hp)
 
   function hitAnimation(){
-    $('.hit').text(ap).fadeIn().animate({fontSize:45+'px'}).fadeOut(100).
+    $('.hit').text(ap).fadeIn().animate({fontSize:45+'px'}).fadeOut(100)
   }
 
   hitAnimation()
