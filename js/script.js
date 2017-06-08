@@ -25,13 +25,14 @@ var boss = {
 }
 
 //Timer variables
+var minutes = 0
 var milliseconds = 0
 var seconds = 0
 
 //game state variables
 var currentPlayer = playerOne;
-var chargeCounter = 0
-var deathBlowCounter = 0
+var chargeCounter = 0;
+var deathBlowCounter = 0;
 var timeout = 2500;
 
 
@@ -139,6 +140,7 @@ function timer() {
 
     milliseconds = 0
     seconds = 0
+    minutes += 1
   }
   $('.timer').text('Time Elapsed: ' + seconds + ":" + milliseconds)
 }
@@ -155,7 +157,7 @@ function damage(min, max) {
 function gameState(ap) {
 
 
- //updates score and score display
+  //updates score and score display
   currentPlayer.score += ap
   boss.hp -= ap
   $('.boss img').effect('shake')
@@ -163,15 +165,29 @@ function gameState(ap) {
   $('.health').text("Boss Health: " + boss.hp)
   $('.playerhealth').text("Player Health: " + currentPlayer.hp)
 
-  function hitAnimation(){
-    $('.hit').text(ap).fadeIn().animate({fontSize:45+'px'}).fadeOut(100)
+  function hitAnimation() {
+    $('.hit').text(ap).fadeIn().animate({
+      fontSize: 45 + 'px'
+    }).animate({
+      fontSize: 0 + 'px'
+    }).fadeOut()
   }
 
   hitAnimation()
-//loads Mega Attack if charge counter is at 5
+  //loads Mega Attack if charge counter is at 5
 
 
+  if (chargeCounter === 5) {
+    console.log('fully charged')
+    $('.attack-mega').show()
+    $('.attack-mega').hide(timeout);
+  }
 
+  if (deathBlowCounter === 3){
+    console.log('DeathBlow fully charged!')
+    $('.deathBlow').show()
+    $('.deathBlow').hide(1200);
+  }
 
 
 
@@ -180,36 +196,45 @@ function gameState(ap) {
   //Switch turns and win conditonals
 
 
-    if (boss.hp <= 1){
-      $('.boss').hide('explode', {pieces:32}, 3000)
-      currentPlayer.hasGone = true;
-      currentPlayer.timeElapsed = seconds / 1000 + milliseconds
-      seconds = 0
-      milliseconds = 0
-      console.log(currentPlayer.name + "time's was: " + currentPlayer.timeElapsed)
-      currentPlayer = playerTwo
-      ChargeCounter = 0
-      deathBlowCounter = 0
-      timeout = 2500;
-      boss.hp = 4000;
-      if(playerOne.hasGone === true & playerTwo.hasGone ==true){
-        console.log("game is over")
-        display.empty()
-        if (playerOne.score >= playerTwo.score || playerOne.timeElapsed >= playerTwo.score){
-          display.append("<h1>"+playerOne.name +" has won!</h1>")
-        } else {
-          display.append("<h1>"+playerTwo.name +" has won!</h1>")
-        }
-      } else {
+  if (boss.hp <= 1) {
+    $('.boss').hide('explode', {
+      pieces: 32
+    }, 3000)
+    currentPlayer.hasGone = true;
+    currentPlayer.timeElapsed = seconds / 1000 + milliseconds
+    seconds = 0
+    milliseconds = 0
+    console.log(currentPlayer.name + "time's was: " + currentPlayer.timeElapsed)
+    currentPlayer = playerTwo
+    ChargeCounter = 0
+    deathBlowCounter = 0
+    timeout = 2500;
+    boss.hp = 4000;
+    if (playerOne.hasGone === true & playerTwo.hasGone == true) {
+      console.log("game is over")
       display.empty()
-      console.log("I'm about to restart the game... did you mean for this to happen?>")
-      console.log("it's" + currentPlayer.name + "'s turn'")
+      if (playerOne.score >= playerTwo.score || playerOne.timeElapsed >= playerTwo.score) {
+
+        display.append("<h1 class='winner'></h1>")
+        $('.winner').animate({
+          fontSize: "0px"
+        }).text(playerOne.name + " is the winner!").animate({
+          fontSize: "60px"
+        })
+      } else {
+        $('.winner').animate({
+          fontSize: "0px"
+        }).text(playerOne.name + " is the winner!").animate({
+          fontSize: "60px"
+        })
+      }
+    } else {
+      display.empty()
       resetboard = setTimeout(gameboard, 5000)
     }
   }
 
-
-
+return "yea, its dead"
 
 
 }
@@ -227,13 +252,21 @@ function gameboard() {
 
   heroDisplay.append("<button class='attack-strong attack-button'></button>")
   heroDisplay.append("<button class='attack-mega attack-button'></button>")
+  heroDisplay.append("<button class='deathBlow attack-button'></button>")
   heroDisplay.append('<h3 class="hit"></h3>')
   $('.hit').hide()
+  $('.attack-mega').hide()
+  $('.deathBlow').hide()
 
   setInterval(timer, 1)
 
 
+
+
+
   $('.attack-strong').on('click', function() {
+    chargeCounter += 1
+    console.log(chargeCounter)
     var strongAttack = damage(50, 100)
     $(this).css({
       'left': random(0, 300) + "px",
@@ -243,14 +276,43 @@ function gameboard() {
   })
 
 
+
+
   $('.attack-mega').on('click', function() {
-    console.log("I've fired")
-    var megaAttack = damage(100, 150)
+    var chanceToHit = random (1,5)
+
+    if (chanceToHit <= 1){
+      console.log('Missed')
+      chargeCounter = 0
+  } else {
+    var megaAttack = damage(200, 400)
+    deathBlowCounter+=1
+    chargeCounter = 0
+  }
+
     $(this).css({
       'left': random(0, 300) + "px",
       'top': random(0, 125) + "px"
     })
+    $(this).hide()
+  })
 
+  $('.deathBlow').on('click', function() {
+    var chanceToHit = random (1,4)
+
+    if (chanceToHit <= 1){
+      console.log('Missed')
+      chargeCounter = 0
+      boss.hp += boss.hp/2
+  } else {
+    gameState(4000);
+  }
+
+    $(this).css({
+      'left': random(0, 300) + "px",
+      'top': random(0, 125) + "px"
+    })
+    $(this).hide()
   })
 
 }
