@@ -2,7 +2,6 @@
 var startButton = $('.newgame')
 var display = $('.container')
 
-
 //player and boss objects
 var playerOne = {
   name: '',
@@ -112,7 +111,6 @@ function nameCheck() {
 function instructions() {
 
   var story = "A fierce and wild monster rules these lands. You've been sent into the deep woods to slay the dreaded beast in its lair. Your weapon hand shakes as you encounter the beast, Can you defeat the monster before he defeats you?"
-  var attackZero = "<button class='attack-normal attack-button'></button><br>Does between 25-50 damage. Not your strongest attack but the most reliable so you'll never miss"
   var attackOne = "<br><button class='attack-strong attack-button'></button><br>Finally a real hero's attack. Does between 50-100 damage and unlocks the MEGA ATTACK! Beware: you can miss your strikes"
   var attackTwo = "<br><button class='attack-mega attack-button'></button><br>Does between 100-400 damge. If the gods are with you and you're fast enough, 3 of these attacks unlocks your fiercest blow"
   var attackThree = "<br><button class='deathBlow attack-button'></button><br>This kills monsters dead. Unless you miss, which gives the monster time to heal. So don't miss. (50/50 chance to miss)"
@@ -120,7 +118,7 @@ function instructions() {
   $('.instruct').html('<p>' + story + '</p>' + '<button class="instruct-button 1">OK</button>')
 
   $('.1').on('click', function() {
-    $('.instruct').html('<p class = "attacks">' + attackZero + "<br>" + attackOne + "<br>" + attackTwo + "<br>" + attackThree + '</p>' + '<button class="instruct-button 2">OK</button>')
+    $('.instruct').html('<p class = "attacks">' + attackOne + "<br>" + attackTwo + "<br>" + attackThree + '</p>' + '<button class="instruct-button 2">OK</button>')
 
     $('.2').on('click', function() {
       $('.instruct').hide()
@@ -165,7 +163,11 @@ function gameState(ap) {
   $('.health').text("Boss Health: " + boss.hp)
   $('.playerhealth').text("Player Health: " + currentPlayer.hp)
 
+  function hitAnimation(){
+    $('.hit').text(ap).fadeIn().animate({fontSize:45+'px'}).fadeOut(100).
+  }
 
+  hitAnimation()
 //loads Mega Attack if charge counter is at 5
 
 
@@ -176,6 +178,7 @@ function gameState(ap) {
 
 
   //Switch turns and win conditonals
+
 
     if (boss.hp <= 1){
       $('.boss').hide('explode', {pieces:32}, 3000)
@@ -215,11 +218,18 @@ function gameState(ap) {
 
 
 function gameboard() {
+
   display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "playerhealth">Player Health: ' + currentPlayer.hp + '</p>' + '<p class = "health">Boss Health: ' + boss.hp + '</p>' + '<p class = "timer">' + '</p>' + ' </div>');
   display.append("<div class='boss'><img src='img/cyclops.png'></div>")
   display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
-  $(".heroBox").append("<button class='attack-strong attack-button'></button>")
-  $(".heroBox").append("<button class='attack-mega attack-button'></button>")
+
+  var heroDisplay = $('.heroBox')
+
+  heroDisplay.append("<button class='attack-strong attack-button'></button>")
+  heroDisplay.append("<button class='attack-mega attack-button'></button>")
+  heroDisplay.append('<h3 class="hit"></h3>')
+  $('.hit').hide()
+
   setInterval(timer, 1)
 
 

@@ -14,13 +14,26 @@ body {
   position: relative;
 }
 
+.container h1 {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 div.instruct {
   margin: 0 auto;
   background: dodgerblue;
   width: 600px;
   color: white;
+  padding: 20px;
   text-align: center;
   z-index: 10000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .instruct p {
@@ -58,7 +71,6 @@ div.instruct {
 }
 
 .scoreDisplay {
-  border: 2px solid black;
   position: absolute;
   width: 300px;
   right: 1100px;
@@ -91,7 +103,13 @@ div.instruct {
   height: 400px;
   position: absolute;
   top: 250px;
-  border: 2px solid black
+}
+
+.heroBox h3 {
+  z-index: 1000;
+  position: relative;
+  bottom: 200px;
+  left: 100px;
 }
 
 

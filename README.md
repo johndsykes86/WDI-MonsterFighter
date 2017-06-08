@@ -1,6 +1,6 @@
 #Monster Hunter!
 
-The object of this game is to defeat the monster as fast as you can before it can defeat you! Well that was the idea anyway.
+The object of this game is to defeat the monster as fast as you can. That's it. Don't lose.
 
 ##Build Log
 
