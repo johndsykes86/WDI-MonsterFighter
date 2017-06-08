@@ -149,15 +149,15 @@ function timer() {
 function damage(min, max) {
   var ap = random(min, max)
   console.log(ap)
-  display.append("<h1 class='hit>" + ap + "</h1>")
   gameState(ap)
 }
-
 
 
 //updates score
 function gameState(ap) {
 
+
+ //updates score and score display
   currentPlayer.score += ap
   boss.hp -= ap
   $('.boss img').effect('shake')
@@ -166,9 +166,16 @@ function gameState(ap) {
   $('.playerhealth').text("Player Health: " + currentPlayer.hp)
 
 
-    bossAttack
+//loads Mega Attack if charge counter is at 5
 
 
+
+
+
+
+
+
+  //Switch turns and win conditonals
 
     if (boss.hp <= 1){
       $('.boss').hide('explode', {pieces:32}, 3000)
@@ -211,18 +218,10 @@ function gameboard() {
   display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "playerhealth">Player Health: ' + currentPlayer.hp + '</p>' + '<p class = "health">Boss Health: ' + boss.hp + '</p>' + '<p class = "timer">' + '</p>' + ' </div>');
   display.append("<div class='boss'><img src='img/cyclops.png'></div>")
   display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
-  $(".heroBox").append("<button class='attack-normal attack-button'></button>")
   $(".heroBox").append("<button class='attack-strong attack-button'></button>")
+  $(".heroBox").append("<button class='attack-mega attack-button'></button>")
   setInterval(timer, 1)
 
-
-  $('.attack-normal').on('click', function() {
-    var normalAttack = gameState(25, 50);
-    $(this).css({
-      'left': random(0, 300) + "px",
-      'top': random(0, 125) + "px"
-    })
-  })
 
   $('.attack-strong').on('click', function() {
     var strongAttack = damage(50, 100)
@@ -232,4 +231,16 @@ function gameboard() {
     })
 
   })
+
+
+  $('.attack-mega').on('click', function() {
+    console.log("I've fired")
+    var megaAttack = damage(100, 150)
+    $(this).css({
+      'left': random(0, 300) + "px",
+      'top': random(0, 125) + "px"
+    })
+
+  })
+
 }
