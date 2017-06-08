@@ -285,7 +285,7 @@ function gameboard() {
       console.log('Missed')
       chargeCounter = 0
   } else {
-    var megaAttack = damage(100, 400)
+    var megaAttack = damage(1git00, 400)
     deathBlowCounter+=1
     chargeCounter = 0
   }
