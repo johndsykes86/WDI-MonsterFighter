@@ -33,6 +33,7 @@ var seconds = 0
 var currentPlayer = playerOne;
 var chargeCounter = 0;
 var deathBlowCounter = 0;
+var click = 0
 var timeout = 2500;
 
 
@@ -150,30 +151,26 @@ function damage(min, max) {
   var ap = random(min, max)
   console.log(ap)
   gameState(ap)
+  return ap
 }
+
+
 
 
 //updates score
 function gameState(ap) {
 
-
   //updates score and score display
-  currentPlayer.score += ap
+  currentPlayer.score += ap * click
   boss.hp -= ap
   $('.boss img').effect('shake')
   $('.score').text("Player Score: " + currentPlayer.score)
   $('.health').text("Boss Health: " + boss.hp)
   $('.playerhealth').text("Player Health: " + currentPlayer.hp)
 
-  function hitAnimation() {
-    $('.hit').text(ap).fadeIn().animate({
-      fontSize: 45 + 'px'
-    }).animate({
-      fontSize: 0 + 'px'
-    }).fadeOut()
-  }
 
-  hitAnimation()
+
+
   //loads Mega Attack if charge counter is at 5
 
 
@@ -186,7 +183,7 @@ function gameState(ap) {
   if (deathBlowCounter === 3){
     console.log('DeathBlow fully charged!')
     $('.deathBlow').show()
-    $('.deathBlow').hide(1200);
+    $('.deathBlow').hide(1500);
   }
 
 
@@ -260,14 +257,21 @@ function gameboard() {
 
   setInterval(timer, 1)
 
-
-
-
+  function hitAnimation(ap) {
+    $('.hit').text(ap).fadeIn().animate({
+      fontSize: 45 + 'px'
+    }).animate({
+      fontSize: 0 + 'px'
+    }).fadeOut()
+  }
 
   $('.attack-strong').on('click', function() {
     chargeCounter += 1
+    click += 1
     console.log(chargeCounter)
     var strongAttack = damage(50, 100)
+    console.log(strongAttack)
+    hitAnimation(strongAttack)
     $(this).css({
       'left': random(0, 300) + "px",
       'top': random(0, 125) + "px"
@@ -280,38 +284,38 @@ function gameboard() {
 
   $('.attack-mega').on('click', function() {
     var chanceToHit = random (1,5)
-
     if (chanceToHit <= 1){
-      console.log('Missed')
+      hitAnimation("Missed")
       chargeCounter = 0
+      click = 0
   } else {
     var megaAttack = damage(100, 400)
+    hitAnimation(megaAttack)
     deathBlowCounter+=1
     chargeCounter = 0
+    click += 1
+    $(this).hide()
   }
-
     $(this).css({
       'left': random(0, 300) + "px",
       'top': random(0, 125) + "px"
     })
-    $(this).hide()
   })
 }
 
   $('.deathBlow').on('click', function() {
+    console.log("I've been clicked!")
     var chanceToHit = random (1,4)
-
     if (chanceToHit <= 1){
-      console.log('Missed')
+      hitAnimation("Missed")
       chargeCounter = 0
-      boss.hp += boss.hp/2
   } else {
+    hitAnimation("DEATHBLOW!")
     gameState(4000);
   }
-
+    $(this).hide()
     $(this).css({
       'left': random(0, 300) + "px",
       'top': random(0, 125) + "px"
     })
-    $(this).hide()
   })
