@@ -8,9 +8,9 @@ because of the project requirements so I decided to take some inspiration from g
 
 
 ## To Do
-Fine-tune animations
-Fine-tune game mechanics (this doesn't feel very fun)
-sound
+Fine-tune animations  
+Fine-tune game mechanics (this doesn't feel very fun)  
+sound  
 
 
 
