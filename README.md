@@ -1,13 +1,16 @@
 # Monster Hunter!
 
-The object of this game is to defeat the monster as fast as you can. That's it. Don't lose.
+The object of this game is to defeat the monster as fast as you can. That's it. Don't lose to your friend. I'm not responsible for any repetitve stress injuries that occur.
 
 ## Build Log
 So I got the idea to do a send up to those old text-based hack n slash games that I played as a youth. Unfortunately, I couldn't do all text-based
-because of the project requirements so I decided to take some inspiration from games I was playing at the time like [](). Thus an idea for a monster fighter game. Light on story but you know
+because of the project requirements so I decided to take some inspiration from games I was playing at the time like [](). Thus an idea for a monster fighter game. Light on story but you get the gist.
+
+
 ## To Do
 Fine-tune animations
 Fine-tune game mechanics (this doesn't feel very fun)
+sound
 
 
 
