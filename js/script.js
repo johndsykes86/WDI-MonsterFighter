@@ -242,7 +242,7 @@ return "yea, its dead"
 function gameboard() {
 
   display.append('<div class = scoreDisplay><p class = "score"> Player Score: ' + currentPlayer.score + '</p>' + '<p class = "playerhealth">Player Health: ' + currentPlayer.hp + '</p>' + '<p class = "health">Boss Health: ' + boss.hp + '</p>' + '<p class = "timer">' + '</p>' + ' </div>');
-  display.append("<div class='boss'><img src='img/cyclops.png'></div>")
+  display.append("<div class='boss'><img src='img/boss.png'></div>")
   display.append("<div class='heroBox'><img src='img/hero.png' class='hero'><div>")
 
   var heroDisplay = $('.heroBox')
